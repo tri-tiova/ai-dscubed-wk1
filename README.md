@@ -43,5 +43,23 @@ it's messy right now but you can make a new tool by:
     - put it in message and tool list
     - put in the response message statement
 
-# current (attempted) architecture
-'''
+## current (attempted) architecture
+```
+main branch
+├── chatbot/           # Main chatbot logic
+│   └── __init__.py
+├── main.py            # Entry point
+├── .env.example       # Environment variables template
+├── .gitignore 
+├── .python-version    # python version used in this project
+├── README.md 
+├── pyproject.toml
+├── uv.lock
+└── requires.txt       # Dependencies
+
+src branch
+├── README.md
+├── base_class.py 
+├── registry.py
+└── main.py
+```
