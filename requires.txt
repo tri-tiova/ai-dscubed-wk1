@@ -2,3 +2,4 @@ openai>=1.93.0
 pydantic>=2.11.7
 python-dotenv>=1.1.1
 rich>=14.0.0
+python_weather>=2.1.0
