@@ -32,13 +32,4 @@ tool calling chatbot project
 - function: gives the weather of an inputted city
 - example" "what's the weather in Melbourne right now?"
 
-# make new tools
-how to make a new tool from what I've learned:
-- get some external libraries 
-- make a class in the base_class 
-- make the get_tool registry
-- in main.py:
-    - make the schema
-    - register it 
-    - put it in message and tool list
-    - put in if response_message.tool_calls
+# architecture
