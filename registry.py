@@ -19,6 +19,10 @@ def get_datetime(name: str) -> Any:
     return tool_registry.get(name)
 """ this is the tool function for the date_time later used in main.py"""
 
+def get_weather(name: str) -> Any:
+    return tool_registry.get(name)
+""" this is the tool function for the weather later used in main.py"""
+
 def list_tools() -> list[str]:
     return list(tool_registry.keys())
 
