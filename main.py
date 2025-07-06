@@ -7,10 +7,8 @@ from openai import OpenAI
 from rich.console import Console
 from rich.panel import Panel
 from datetime import datetime
-from base_class import DateTimeTool
-
-from base_class import Calculator
-from registry import register_tool, get_calculator, get_datetime
+from base_class import Calculator, DateTimeTool, WeatherTool
+from registry import register_tool, get_calculator, get_datetime, get_weather
 
 # This is for the API key, they'll validate it before continuing
 load_dotenv()
@@ -53,6 +51,23 @@ date_time_schema = {
     }
 }
 
+weather_schema = {
+    "type": "function",
+    "function": {
+        "name": "weather",
+        "description": "weather information for a given location",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "type": "string",
+                    "description": "The location to get weather information for"
+                }
+            },
+            "required": ["location"]
+        }
+    }
+}
 
 # === Register tool ===
 calculator = Calculator()
@@ -61,8 +76,11 @@ register_tool(calculator.name, calculator)
 date_time = DateTimeTool()
 register_tool(date_time.name, date_time)
 
+weather = WeatherTool()
+register_tool(weather.name, weather)
+
 # === Start CLI loop ===
-console.print(Panel("🤖 AI CLI Assistant — type 'exit' to quit"))
+console.print(Panel("🤖 AI CLI Assistant — type 'exit' to quit", style="bold green"))
 
 # Initialize chat history
 messages = [
@@ -90,7 +108,7 @@ while True:
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=messages,
-        tools=[calculator_schema, date_time_schema],
+        tools=[calculator_schema, date_time_schema, weather_schema],
         tool_choice="auto"
     )
 
@@ -118,6 +136,16 @@ while True:
             elif name == "date_time":
                 tool = get_datetime("date_time")
                 result = tool.date_time()
+                messages.append({
+                    "role": "tool",
+                    "tool_call_id": tool_call.id,
+                    "name": name,
+                    "content": result
+                })
+
+            elif name == "weather":
+                tool = get_weather("weather")
+                result = tool.weather(args["location"])
                 messages.append({
                     "role": "tool",
                     "tool_call_id": tool_call.id,
